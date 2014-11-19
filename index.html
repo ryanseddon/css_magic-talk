@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Performant UIs using CSS magic</title>
+    <link rel="stylesheet" type="text/css" href="build/build.css">
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Performant UIs using CSS magic</h1>
+      </section>
+      <section data-bespoke-state="face"></section>
+      <section data-bespoke-state="har">
+        <h2>Performance beyond HTTP</h2>
+      </section>
+      <section>
+        <h2>Animation to improve performance</h2>
+        <ul>
+          <li>Well executed animation instills perception of performance</li>
+          <li>Not the bad old days of flash 20s transitions</li>
+          <li><a href="https://medium.com/@michaelvillar/improve-the-payment-experience-with-animations-3d1b0a9b810e" target="_blank">Stripe checkout</a>
+            <is>a great example.</is>
+          </li>
+        </ul>
+      </section>
+      <section><img src="https://d262ilb51hltx0.cloudfront.net/max/800/1*NXaiefRJP2Qeqf93zU_1Cg.gif" height="80%"></section>
+      <section>
+        <h2>How can I do this?</h2>
+        <ul>
+          <li><a href="http://bouncejs.com/">Bounce.js</a></li>
+          <li>Pseudo based physics</li>
+          <li>The web is capable of native performance*</li>
+        </ul>
+      </section>
+      <section data-bespoke-state="emphatic">
+        <h2>Case study &mdash; ScrollListView.js</h2>
+      </section>
+      <section>
+        <ul>
+          <li>Performant scrolling library</li>
+          <li>Reusable list items reordered on scroll</li>
+          <li>Uses flexbox order property!</li>
+        </ul>
+      </section>
+      <section><img src="http://i.imgur.com/jWUuhJO.gif" height="80%"><a href="http://www.thecssninja.com/css/scrolllistview">Read more</a></section>
+      <section>
+        <h2>But there's a problem</h2>
+        <ul>
+          <li>Works great for normal steady paced scrolling</li>
+          <li>High velocity scrolling the cells started to "white out"</li>
+          <li><a href="https://ryanseddon.github.io/ScrollListViewi/example">Live demo</a></li>
+        </ul>
+      </section>
+      <section><img src="http://i.minus.com/ibx51muHPvs1Bk.gif" height="80%"></section>
+      <section>
+        <h2>Why?</h2>
+      </section>
+      <section>
+        <h2>Performance</h2>
+        <ul>
+          <li>Cost of CSS property change</li>
+          <li><a href="http://csstriggers.com" target="_blank">csstriggers.com</a></li>
+          <li>order property causes reflow & paint</li>
+          <li>Always use transform, opacity</li>
+          <li>Everything else is detrimental</li>
+        </ul>
+      </section>
+      <section><img src="images/order_cost.png" width="80%"></section>
+      <section>
+        <h2>Know your paints vs reflows</h2>
+        <ul>
+          <li>Rudimentary knowledge of the browser</li>
+          <li>Paint is a non geometric change</li>
+          <li>Reflow is a geometric change</li>
+        </ul>
+      </section>
+      <section>
+        <h2>What causes a reflow or paint?</h2>
+        <pre><code class="language-javascript">// Paint no geometric changes
+body.style.visibility = 'hidden';
+
+// Paint & reflow
+body.style.fontSize = '20px';
+
+// Reflow, browser is forced to
+// return element geometry
+body.offsetLeft;
+</code></pre>
+      </section>
+      <section><img src="http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/devtools-waterfall.jpg" height="80%"></section>
+      <section>
+        <h2>Batching</h2>
+        <ul>
+          <li>Reads and writes</li>
+          <li>Layout & Paint will only happen once per tick</li>
+          <li>requestAnimationFrame 60fps</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Control & Minimise</h2>
+        <ul>
+          <li>DOM abstractions are your friend</li>
+          <li>React paved the way in this thinking</li>
+          <li>Embers HTMLBars is also taking this onboard</li>
+          <li>fastdom.js is a light weight example</li>
+        </ul>
+      </section>
+      <section>
+        <h2>How do I measure UI performance?</h2>
+        <ul>
+          <li>To the dev tools Chrome, IE11, Safari, Firefox</li>
+          <li>All browsers now offer some form of timeline measurement!</li>
+          <li>Let's debug the ScrollListView.js issue</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Chrome timeline</h2>
+        <ul>
+          <li>Measure reflows, paints and frame rate</li>
+          <li>Doesn't illuminate why the "white out" is happening</li>
+          <li>Same for Firefox, Safari, IE11</li>
+        </ul>
+      </section>
+      <section><img src="../images/timeline.png" width="730"></section>
+      <section>
+        <h2>Safari to the rescue</h2>
+        <ul>
+          <li>Show compositing borders</li>
+          <li>Shows textures that are being sent to GPU</li>
+          <li>Number should be small</li>
+        </ul>
+      </section>
+      <section><img src="../images/textures.png" width="80%"></section>
+      <section>
+        <h2>Flooding the GPU</h2>
+        <ul>
+          <li>Uploading way too many textures</li>
+          <li>GPU bus can't handle it</li>
+          <li>We have our "white out" answer!</li>
+          <li><a href="http://ariya.ofilabs.com/2013/06/optimizing-css3-for-gpu-compositing.html">Recommended reading</a></li>
+          <li>Order property isn't performant :(</li>
+        </ul>
+      </section>
+      <section>
+        <h2>It's not easy</h2>
+        <ul>
+          <li>Dev tools are still immature</li>
+          <li>High performance UIs on the web is hard</li>
+          <li>...but not impossible!</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Native performance on the web?</h2>
+        <ul>
+          <li>Possible through abstraction layer</li>
+          <li>
+            <a href='http://famo.us/', target='_blank'>Famo.us</a>
+            estews these ideas into such an abstraction
+          </li>
+          <li>Flat DOM + rAF + GPU + Physics Engine = Awesome</li>
+          <li>The renderer can be DOM, SVG or even WebGL</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Performance is fragile</h2>
+        <ul>
+          <li>It's very easy to degrade performance</li>
+          <li>Abstractions put a layer in front</li>
+          <li>Hand rolling will usually end in tears</li>
+          <li>The DOM is the worst</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Web platform needs low level controls</h2>
+        <ul>
+          <li>Controlling paints & reflows</li>
+          <li>Isolation of components</li>
+          <li>Pretty much an iFrame without the issues</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Thanks!</h2>
+      </section>
+    </article>
+    <script src="build/build.js"></script>
+    <script src="https://rawgit.com/ryanseddon/467c7ed5ef86850ba153/raw/ac2ee1cb5a9873dd6d2a70239571661df9c26fb6/famous.js"></script>
+    <script src="https://rawgit.com/ryanseddon/ffc2b6f0528cea3cd67f/raw/39e9fe217f403501a52aa26806bebb197a0f4cb0/head.js"></script>
+  </body>
+</html>
